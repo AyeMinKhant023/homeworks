@@ -22,4 +22,4 @@ npm run dev
 #### Seed data
 ```
 http://localhost:3000/blog/seed
-```
+```# university-application-website
