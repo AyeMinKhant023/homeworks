@@ -2,22 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { updateSession } from "./utils/loginUser";
 
 export async function middleware(request: NextRequest) {
-  console.log("Middleware invoked")
-  const res = await updateSession(request)
-  if (res)
-    return res
-  else 
-    return NextResponse.redirect(new URL("/blog/login", request.url))
+  console.log("Middleware invoked");
 
-  // === Short coing style
-  // return (await updateSession(request)) || NextResponse.redirect(new URL("/blog/login", request.url));
+  const res = await updateSession(request);
+
+  if (res) return res;
+
+  const url = request.nextUrl.clone();
+  if (url.pathname.startsWith("/admin")) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  return NextResponse.next();
 }
 
-// if path matches with matcher config, then it invoke middleware(request)
 export const config = {
-  matcher: '/blog/new/:path*',
-}
-
-// export const config = { 
-//   matcher: ['/blog/new/:path*', '/blog/:path*'],
-// }
+  matcher: ["/admin/:path*"],
+};

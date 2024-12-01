@@ -1,71 +1,109 @@
-"use server"
+// loginUser.ts
+"use server";
 
-import { SignJWT, jwtVerify } from "jose"; 
+import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 const secretKey = process.env.SECRET;
+if (!secretKey) {
+  throw new Error("SECRET environment variable is not set");
+}
 const key = new TextEncoder().encode(secretKey);
 
-const TIMEOUT = 300 // 300 second
+const TIMEOUT = 300; // 300 seconds
 
 export async function encrypt(payload: any) {
+  const exp = Math.floor(Date.now() / 1000) + TIMEOUT;
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime(`${TIMEOUT} sec from now`)
+    .setExpirationTime(exp)
     .sign(key);
 }
 
 export async function decrypt(input: string): Promise<any> {
-  const { payload } = await jwtVerify(input, key, {
-    algorithms: ["HS256"],
-  });
-  return payload;
+  try {
+    const { payload } = await jwtVerify(input, key, {
+      algorithms: ["HS256"],
+    });
+    return payload;
+  } catch (error) {
+    cookies().delete("session");
+    return null;
+  }
 }
 
-export async function loginUser(userInput:any, remember: boolean) { 
-  const {id, email, name} = userInput; 
+export async function loginUser(userInput: any, remember: boolean) {
+  const { id, email, name } = userInput;
 
-  let timeout = TIMEOUT // default 5 mins
-  if (remember)
-    timeout = 24*60*60;
-  // Create the session
+  const timeout = remember ? 24 * 60 * 60 : TIMEOUT;
   const expires = new Date(Date.now() + timeout * 1000);
-  const session = await encrypt({ id, email, name, expires });
 
-  // Save the session in a cookie
-  cookies().set("session", session, { expires, httpOnly: true });
-  return { message: "Login Success" }
+  const sessionData = {
+    id,
+    email,
+    name,
+    exp: Math.floor(expires.getTime() / 1000),
+  };
+
+  const session = await encrypt(sessionData);
+
+  cookies().set("session", session, {
+    expires,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+
+  return { message: "Login Success" };
 }
 
 export async function logoutUser() {
-  // Destroy the session 
-  // cookies().set("session", "", { expires: new Date(0) });
-  cookies().delete('session') 
-  return { message: "Logout Success" }
+  cookies().delete("session");
+  return { message: "Logout Success" };
 }
 
 export async function getSession() {
-  const session = cookies().get("session")?.value;
-  if (!session) return null;
-  return await decrypt(session);
+  try {
+    const session = cookies().get("session")?.value;
+    if (!session) return null;
+    return await decrypt(session);
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function updateSession(request: NextRequest) {
-  const session = request.cookies.get("session")?.value;
-  if (!session) return;
+  try {
+    const session = request.cookies.get("session")?.value;
+    if (!session) return null;
 
-  // Refresh the session so it doesn't expire
-  const parsed = await decrypt(session);
-  parsed.expires = new Date(Date.now() + TIMEOUT * 1000);
-  const res = NextResponse.next();
-  res.cookies.set({
-    name: "session",
-    // secure: true,   // if https is used
-    value: await encrypt(parsed),
-    httpOnly: true,
-    expires: parsed.expires,
-  });
-  return res;
+    const parsed = await decrypt(session);
+    if (!parsed) return null;
+
+    const expires = new Date(Date.now() + TIMEOUT * 1000);
+
+    // Create new session data
+    const sessionData = {
+      ...parsed,
+      exp: Math.floor(expires.getTime() / 1000),
+    };
+
+    const newSession = await encrypt(sessionData);
+
+    const res = NextResponse.next();
+    res.cookies.set({
+      name: "session",
+      value: newSession,
+      httpOnly: true,
+      expires: expires,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    return res;
+  } catch (error) {
+    return null;
+  }
 }

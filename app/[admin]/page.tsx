@@ -1,12 +1,12 @@
 import prisma from "@/utils/db";
 import Link from "next/link";
-import Logout from "./_component/Logout";
+import Logout from "./admin/_component/Logout";
 import { getSession } from "@/utils/loginUser";
-import DeleteButton from "./_component/DeleteButton";
-import deletePost from "./_actions/deletePost";
-import { style } from "./constants/style";
-import Universities from "./[topUniverities]/page";
-import TopUniversities from "./[topUniverities]/page";
+import DeleteButton from "./admin/_component/DeleteButton";
+import deletePost from "./admin/_actions/deletePost";
+import { style } from "./admin/constants/style";
+import Universities from "./admin/[topUniverities]/page";
+import TopUniversities from "./admin/[topUniverities]/page";
 
 export default async function Blog() {
   const posts = await prisma.post.findMany({
@@ -28,11 +28,11 @@ export default async function Blog() {
             </>
           ) : (
             <>
-              <Link className="mr-2" href="/universities/login">
+              <Link className="mr-2" href="/admin/login">
                 Login
               </Link>
               |
-              <Link className="ml-2" href="/universities/register">
+              <Link className="ml-2" href="/admin/register">
                 Register
               </Link>
             </>
@@ -55,7 +55,7 @@ export default async function Blog() {
               <>
                 <Link
                   href={{
-                    pathname: "/universities/edit",
+                    pathname: "/admin/edit",
                     query: {
                       id: post.id,
                       subject: post.subject,
@@ -75,19 +75,19 @@ export default async function Blog() {
         ))}
       </div>
       <Link
-        href="/universities/new"
+        href="/admin/new"
         className={`${style} border-indigo-800 mr-2 rounded-md`}
       >
         New
       </Link>
       <Link
-        href="/universities/edit"
+        href="/admin/edit"
         className={`${style} border-indigo-800 mr-2 rounded-md`}
       >
         Edit
       </Link>
       <Link
-        href="/universities/user"
+        href="/admin/user"
         className={`${style} border-indigo-800 mr-2 rounded-md`}
       >
         User

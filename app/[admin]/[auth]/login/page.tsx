@@ -1,10 +1,10 @@
 "use client";
 import { useFormState } from "react-dom";
-import login from "../_actions/login";
+import login from "../../admin/_actions/login";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import SubmitButton from "../_component/SubmitButton";
-import { style } from "../constants/style";
+import SubmitButton from "../../admin/_component/SubmitButton";
+import { style } from "../../admin/constants/style";
 
 export default function Login() {
   const [data, action] = useFormState(login, {});
@@ -67,7 +67,7 @@ export default function Login() {
               <p className="text-sm text-gray-600">
                 Don't have an account?{" "}
                 <Link
-                  href="/universities/register"
+                  href="/admin/register"
                   className="text-blue-500 hover:underline"
                 >
                   Register
@@ -79,7 +79,7 @@ export default function Login() {
       </form>
       <br />
       <hr />
-      <Link href="/universities">Back</Link>
+      <Link href="/admin">Back</Link>
     </div>
   );
 }
