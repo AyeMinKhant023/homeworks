@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       <div
-        className="m-0 p-0 min-h-screen bg-cover bg-center relative flex justify-center"
+        className="m-0 p-0 h-screen bg-cover bg-center relative flex justify-center max-w-screen"
         style={{
           backgroundImage:
             "url('https://images.pexels.com/photos/3762800/pexels-photo-3762800.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')",

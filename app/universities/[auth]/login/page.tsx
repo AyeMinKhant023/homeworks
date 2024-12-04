@@ -1,10 +1,10 @@
 "use client";
 import { useFormState } from "react-dom";
-import login from "../../admin/_actions/login";
+import login from "../../_actions/login";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import SubmitButton from "../../admin/_component/SubmitButton";
-import { style } from "../../admin/constants/style";
+import { style } from "../../constants/style";
 
 export default function Login() {
   const [data, action] = useFormState(login, {});
