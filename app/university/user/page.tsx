@@ -34,7 +34,7 @@ export default async function User() {
                 </tbody>
             </table>
             <br /><hr /><br />
-            <Link href="/blog">Back</Link>
+            <Link href="/university">Back</Link>
         </>
     )
 }
