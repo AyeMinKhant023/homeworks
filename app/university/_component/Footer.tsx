@@ -61,10 +61,10 @@ const Footer = () => {
         </div>
       </div>
       <div className="text-sm text-gray-400 mt-10">
-        <Link href="/terms">Terms of use</Link> |
-        <Link href="/privacy">Privacy policy</Link>
+        <Link href="">Terms of use</Link> | <Link href="">Privacy policy</Link>
       </div>
-      <p className="text-gray-500 mt-4">© 2024 ApplyUni.com</p>
+      <p className="text-gray-500 mt-4">© 2024 ApplyUni.com </p>
+      <p className="text-gray-500 mt-2 text-xs">by Aye Min Khant (Patric)</p>
     </footer>
   );
 };

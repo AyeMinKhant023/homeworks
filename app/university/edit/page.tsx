@@ -3,7 +3,11 @@ import { useFormState } from "react-dom";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import SubmitButton from "../_component/SubmitButton";
-import { style } from "../constants/style";
+import {
+  adminBgStyle,
+  mainBtnStyle1,
+  textInputStyle,
+} from "../constants/style";
 import updatePost from "../_actions/updatePost";
 
 export default function Edit({
@@ -46,10 +50,15 @@ export default function Edit({
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-blue-300">
+    <div
+      className={`min-h-screen flex flex-col items-center justify-center ${adminBgStyle}`}
+    >
       <hr />
+      <div className="text-white text-3xl font-semibold mt-10">
+        Admin Section
+      </div>
       <div className="bg-white p-8 rounded-3xl shadow-lg w-full max-w-2xl h-full mt-6">
-        <div className="text-blue-600 text-center text-3xl font-semibold mb-6">
+        <div className="text-black text-center text-3xl font-semibold mb-6">
           Edit University
         </div>
         <form action={action} className="mt-4">
@@ -62,7 +71,7 @@ export default function Edit({
                     {key.charAt(0).toUpperCase() + key.slice(1)}
                   </label>
                   <input
-                    className={style}
+                    className={textInputStyle}
                     type={
                       key === "website" || key === "imageUrl" ? "url" : "text"
                     }
@@ -86,10 +95,7 @@ export default function Edit({
       </div>
       <br />
       <hr />
-      <Link
-        href="/university"
-        className="bg-white text-blue-600 px-4 py-2 rounded-3xl mb-7"
-      >
+      <Link href="/university" className={`${mainBtnStyle1} mb-10`}>
         Back
       </Link>
     </div>
