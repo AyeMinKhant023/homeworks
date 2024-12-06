@@ -12,7 +12,14 @@ export default function Home() {
       className="flex flex-col justify-center items-center text-white min-h-screen"
     >
       {/* Overlay for dimming */}
-      <div className="absolute inset-0 bg-black/50"></div>
+
+      <div className="absolute inset-0 bg-black/50">
+        <div>
+          <div className="text-white text-2xl font-semibold mx-10 my-5 justify-center">
+            ApplyUni.com
+          </div>
+        </div>
+      </div>
 
       <div className="relative z-10 bg-white/10 backdrop-blur-lg rounded-3xl p-12 max-w-4xl text-center">
         <h1 className="text-4xl font-bold mb-4">Plan your future</h1>

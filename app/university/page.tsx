@@ -127,10 +127,10 @@ export default function UniversityPage() {
           {/* Main Content */}
           <div className="container mx-auto px-6 pt-16 pb-24">
             <div className="flex-col max-w-3xl mx-auto text-center my-6">
-              <h2 className="text-5xl font-bold text-white mb-6 leading-tight font-">
+              <h2 className="text-5xl font-extrabold text-black mb-6 leading-tight">
                 Unlock Your Future
               </h2>
-              <p className="text-xl text-gray-200 mb-12">
+              <p className="text-xl text-black mb-12 font-semibold">
                 Expert guidance through your university application process.
               </p>
 
