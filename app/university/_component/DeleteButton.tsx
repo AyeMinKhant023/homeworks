@@ -1,5 +1,5 @@
 "use client";
-import { style } from "../constants/style";
+import { adminBtnStyle, style } from "../constants/style";
 
 export default function DeleteButton({
   id,
@@ -19,11 +19,8 @@ export default function DeleteButton({
   };
 
   return (
-    <button
-      className={`${style} border-indigo-50 absolute top-2 right-2`}
-      onClick={handleDelete}
-    >
-      x
+    <button className={`${adminBtnStyle}`} onClick={handleDelete}>
+      Delete
     </button>
   );
 }
